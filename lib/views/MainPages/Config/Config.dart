@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lovelink/views/MainPages/Config/PasswordChange.dart';
 import 'package:lovelink/views/components/LoveButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../constants.dart';
 import '../../access/Login.dart';
 
 class Config extends StatefulWidget {
@@ -21,95 +20,140 @@ class _ConfigState extends State<Config> {
 
   Future<void> closeSession() async {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: const Text("Estas seguro de cerrar tu sesión"),
-            actions: [
-              TextButton(
-                  onPressed: () async {
-                    final SharedPreferences prefs = await SharedPreferences
-                        .getInstance();
-                    await prefs.remove('user');
-                    await prefs.remove('password');
-
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Login())
-                    );
-                  },
-                  child: const Text("Simon")
-              ),
-              TextButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Nel")
-              )
-            ],
-          );
-        }
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: const Text("Estas seguro de cerrar tu sesión?"),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.remove('user');
+                await prefs.remove('password');
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Login()));
+              },
+              child: const Text("Si"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("No"),
+            ),
+          ],
+        );
+      },
     );
   }
 
-    Future<void> test()async{
-      final ImagePicker picker = ImagePicker();
-// Pick an image.
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      setState(() {
-        _imageFile = image;
-      });
-
-      // Capture a photo.
-      //final XFile? photo = await picker.pickImage(source: ImageSource.camera);
-
-// Pick a video.
-      //final XFile? galleryVideo = await picker.pickVideo(source: ImageSource.gallery);
-// Capture a video.
-      //final XFile? cameraVideo = await picker.pickVideo(source: ImageSource.camera);
-// Pick multiple images.
-      //final List<XFile> images = await picker.pickMultiImage();
-// Pick singe image or video.
-      //final XFile? media = await picker.pickMedia();
-// Pick multiple images and videos.
-      //final List<XFile> medias = await picker.pickMultipleMedia();    }
-
-
+  Future<void> test() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _imageFile = image;
+    });
   }
 
   void goToPasswordChange() {
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const PasswordChange()
-        )
+        MaterialPageRoute(builder: (context) => const PasswordChange())
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: InkWell(
-              onTap: closeSession,
-              child: LoveButton(texto: "Cerrar sesión", Wsize: MediaQuery.of(context).size.width/2),
-            ),
-          ),
-          const SizedBox(height: 20,),
-          Center(
-            child: InkWell(
-              onTap: goToPasswordChange,
-              child: LoveButton(texto: "Cambiar Contraseña", Wsize: MediaQuery.of(context).size.width/2),
-            ),
-          ),
-          _imageFile == null
-              ? const Text('No image selected.', style: TextStyle(color: Colors.white),)
-              : Image.file(File(_imageFile!.path),height: 100,width: 100,),
-        ],
+      appBar: AppBar(
+        backgroundColor: const Color(0xffffa31a),
+        automaticallyImplyLeading: false,
+        title: const Text('Configuracion'),
       ),
+      body: Container(
+        color: background,
+        child: ListView(
+          children: [
+            Container(
+              color: backgroundNav,
+              padding: const EdgeInsets.all(16.0),
+              child: const Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: AssetImage('assets/images/cat.jpg'),
+                  ),
+                  SizedBox(width: 16.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Victoria',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            // Settings
+            settingsItem(Icons.notifications, 'Notificaciones'),
+            settingsItem(Icons.language, 'Idioma', 'Español'),
+            settingsItem(Icons.lock, 'Privacidad'),
+            settingsItem(Icons.help, 'Ayuda'),
+            settingsItem(Icons.info, 'Sobre'),
+            const SizedBox(height: 20.0),
+            // Log Out
+            const Divider(color: Colors.white54),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text(
+                'Log Out',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: closeSession,
+            ),
+            const SizedBox(height: 20.0),
+            /*Center(
+              child: InkWell(
+                onTap: test,
+                child: LoveButton(texto: "Seleccionar Imagen", Wsize: MediaQuery.of(context).size.width/2),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            _imageFile == null
+                ? const Text('No image selected.', style: TextStyle(color: Colors.white),)
+                : Image.file(File(_imageFile!.path), height: 100, width: 100,),*/
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget settingsItem(IconData icon, String title, [String? subtitle]) {
+    return ListTile(
+      leading: Icon(icon, color: const Color(0xffffa31a)),
+      title: Text(
+        title,
+        style: const TextStyle(color: Colors.white),
+      ),
+      subtitle: subtitle != null
+          ? Text(
+        subtitle,
+        style: const TextStyle(color: Colors.white54),
+      )
+          : null,
+      trailing: const Icon(Icons.chevron_right, color: Colors.white),
+      onTap: () {
+        if (title == 'Cambiar Contraseña') {
+          goToPasswordChange();
+        }
+      },
     );
   }
 }
