@@ -2,3 +2,6 @@ build/
 .dart_tool/
 .idea/
 obj/
+.flutter-plugins-dependencies
+.flutter-plugins
+.DS_Store

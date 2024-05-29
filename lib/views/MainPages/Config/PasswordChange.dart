@@ -12,8 +12,29 @@ class PasswordChange extends StatefulWidget {
 }
 
 class _PasswordChangeState extends State<PasswordChange> {
+  final TextEditingController oldPassword = TextEditingController();
+  final TextEditingController newPassword = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
 
   Future<void> ChangePass() async {
+
+    if(oldPassword.text.isEmpty){
+      print("No se declaro la contraseña actual");
+      return;
+    }
+    if(newPassword.text.isEmpty){
+      print("No hay nueva contra");
+      return;
+    }
+    if(confirmPassword.text.isEmpty){
+      print("Se falta la confirmación");
+      return;
+    }
+    if(newPassword.text != confirmPassword.text){
+      print("En veces la vida no es como uno quiere");
+      return;
+    }
+
     showDialog(
         context: context,
         builder: (context) {
@@ -49,31 +70,37 @@ class _PasswordChangeState extends State<PasswordChange> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black12,
+        backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.black12,
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Center(
           child: Column(
             children: [
               const Spacer(),
-              const LoveTextField(
+               LoveTextField(
                   Placeholder: "Contraseña antigua",
                   Wsize: double.infinity,
-                  textColor: Colors.white,
+                  textColor: Colors.black,
+                  isObscured: true,
+                  controller: oldPassword,
               ),
               const SizedBox(height: 50,),
-              const LoveTextField(
+               LoveTextField(
                   Placeholder: "Nueva contraseña",
                   Wsize: double.infinity,
-                  textColor: Colors.white,
+                  textColor: Colors.black,
+                  isObscured: true,
+                  controller: newPassword,
               ),
               const SizedBox(height: 50,),
-              const LoveTextField(
+               LoveTextField(
                   Placeholder: "Confirmar contraseña",
                   Wsize: double.infinity,
-                  textColor: Colors.white,
+                  textColor: Colors.black,
+                  isObscured: true,
+                  controller: confirmPassword,
               ),
               const SizedBox(height: 100,),
               InkWell(

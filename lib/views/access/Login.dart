@@ -63,14 +63,14 @@ class _LoginState extends State<Login> {
                 LoveTextField(
                     Placeholder: "Correo",
                     Wsize: getTextFieldsSize(),
-                    icono: Icon(Icons.email),
+                    icono: const Icon(Icons.email),
                     controller: userController,
                 ),
                 const SizedBox(height: 15,),
                 LoveTextField(
                   Placeholder: "Contraseña",
                   Wsize: getTextFieldsSize(),
-                  icono: Icon(Icons.lock),
+                  icono: const Icon(Icons.lock),
                   controller: passwordController,
                   isObscured: true,
                 ),
@@ -91,7 +91,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 const SizedBox(height: 15,),
-                Text("Registrate",style: TextStyle(fontSize: 20),),
+                const Text(
+                  "Registrate",style: TextStyle(fontSize: 20),
+                ),
                 const Spacer(),
               ],
             )
