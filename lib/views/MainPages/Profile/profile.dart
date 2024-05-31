@@ -28,7 +28,8 @@ class _ProfileState extends State<Profile> {
     userdata= User(
         name: "Victoria",
         phone: "663976927",
-        email: "corero@prueba.com"
+        email: "corero@prueba.com",
+        password: "password123"
     );
 
     emailController.text = userdata.email;
