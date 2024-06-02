@@ -26,6 +26,7 @@ class _ProfileState extends State<Profile> {
     super.initState();
 
     userdata= User(
+        id: 1,
         name: "Victoria",
         phone: "663976927",
         email: "corero@prueba.com",

@@ -1,8 +1,10 @@
 class User{
   String email, phone, name, password;
   int? age;
+  int id;
 
   User({
+    required this.id,
     required this.name,
     required this.email,
     required this.phone,
@@ -10,3 +12,9 @@ class User{
     this.age,
   });
 }
+
+/*
+* id usuario
+* contraseña actual
+* contraseña nueva }
+* */
