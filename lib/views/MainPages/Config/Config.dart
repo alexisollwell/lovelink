@@ -15,8 +15,8 @@ class Config extends StatefulWidget {
 }
 
 class _ConfigState extends State<Config> {
-
   XFile? _imageFile;
+  double _currentSliderValue = 0.2;
 
   Future<void> closeSession() async {
     showDialog(
@@ -77,14 +77,14 @@ class _ConfigState extends State<Config> {
             Container(
               color: backgroundNav,
               padding: const EdgeInsets.all(16.0),
-              child: const Row(
+              child: Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 30.0,
                     backgroundImage: AssetImage('assets/images/cat.jpg'),
                   ),
-                  SizedBox(width: 16.0),
-                  Column(
+                  const SizedBox(width: 16.0),
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -107,6 +107,23 @@ class _ConfigState extends State<Config> {
             settingsItem(Icons.lock, 'Privacidad'),
             settingsItem(Icons.help, 'Ayuda'),
             settingsItem(Icons.info, 'Sobre'),
+            const SizedBox(height: 20.0),
+            // Slider
+            const Text(
+              'Rango de búsqueda',
+              style: TextStyle(color: Colors.white, fontSize: 16.0),
+              textAlign: TextAlign.center,
+            ),
+            Slider(
+              value: _currentSliderValue,
+              max: 100,
+              label: _currentSliderValue.round().toString(),
+              onChanged: (double value) {
+                setState(() {
+                  _currentSliderValue = value;
+                });
+              },
+            ),
             const SizedBox(height: 20.0),
             // Log Out
             const Divider(color: Colors.white54),
