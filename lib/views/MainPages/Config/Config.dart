@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lovelink/models/configModels/notificacionModel.dart';
 import 'package:lovelink/views/MainPages/Config/PasswordChange.dart';
+import 'package:lovelink/views/MainPages/Config/privacidad.dart';
+import 'package:lovelink/views/MainPages/Config/sobre.dart';
 import 'package:lovelink/views/components/LoveButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants.dart';
 import '../../access/Login.dart';
+import 'idioma.dart';
+import 'notificaciones.dart';
 
 class Config extends StatefulWidget {
   const Config({super.key});
@@ -28,10 +33,12 @@ class _ConfigState extends State<Config> {
             TextButton(
               onPressed: () async {
                 Navigator.pop(context);
-                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                final SharedPreferences prefs = await SharedPreferences
+                    .getInstance();
                 await prefs.remove('user');
                 await prefs.remove('password');
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Login()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const Login()));
               },
               child: const Text("Si"),
             ),
@@ -62,6 +69,7 @@ class _ConfigState extends State<Config> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,14 +85,14 @@ class _ConfigState extends State<Config> {
             Container(
               color: backgroundNav,
               padding: const EdgeInsets.all(16.0),
-              child: Row(
+              child: const Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 30.0,
                     backgroundImage: AssetImage('assets/images/cat.jpg'),
                   ),
-                  const SizedBox(width: 16.0),
-                  const Column(
+                  SizedBox(width: 16.0),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -167,8 +175,16 @@ class _ConfigState extends State<Config> {
           : null,
       trailing: const Icon(Icons.chevron_right, color: Colors.white),
       onTap: () {
-        if (title == 'Cambiar Contraseña') {
+        if (title == 'Idioma') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const IdiomaScreen()));
+        } else if (title == 'Cambiar Contraseña') {
           goToPasswordChange();
+        } else if (title == 'Notificaciones') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
+        } else if (title == 'Privacidad') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyScreen()));
+        } else if (title == 'Sobre') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AboutScreen()));
         }
       },
     );
